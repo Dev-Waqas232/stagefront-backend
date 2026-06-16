@@ -3,12 +3,16 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"stagefront-backend/config"
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	cfg := config.LoadConfig()
+
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Server is running!")
 	})
 
-	http.ListenAndServe(":8080", nil)
+	port := ":" + cfg.PORT
+	http.ListenAndServe(port, nil)
 }
