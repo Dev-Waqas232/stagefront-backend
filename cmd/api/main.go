@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"stagefront-backend/config"
+	"stagefront-backend/internal/config"
 )
 
 func main() {
