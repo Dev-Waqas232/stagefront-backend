@@ -2,29 +2,23 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"stagefront-backend/internal/config"
+	"stagefront-backend/internal/handlers"
 )
 
 func main() {
+	// Env loading
 	cfg := config.LoadConfig()
 
+	// Database connection
 	db := config.ConnectDb()
 	defer db.Close(context.Background())
 
-	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		var result int
-		err := db.QueryRow(context.Background(), "SELECT 1").Scan(&result)
+	// Endpoint routes
+	handlers.RegisterRoutes(db)
 
-		if err != nil {
-			http.Error(w, "DB connection failed", http.StatusServiceUnavailable)
-			return
-		}
-
-		fmt.Fprint(w, "Server is running!")
-	})
-
+	// Server setup
 	port := ":" + cfg.PORT
 	http.ListenAndServe(port, nil)
 
