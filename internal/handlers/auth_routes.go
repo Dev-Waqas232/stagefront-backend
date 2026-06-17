@@ -1,5 +1,12 @@
 package handlers
 
-import "github.com/jackc/pgx/v5"
+import (
+	"net/http"
+	"stagefront-backend/internal/services"
 
-func registerAuthRoutes(db *pgx.Conn) {}
+	"github.com/jackc/pgx/v5"
+)
+
+func registerAuthRoutes(db *pgx.Conn) {
+	http.HandleFunc("POST /auth/register", services.RegisterHandler(db))
+}
